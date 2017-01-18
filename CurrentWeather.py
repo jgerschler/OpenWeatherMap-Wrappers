@@ -74,5 +74,61 @@ class CurrentWeather(object):
     
     def get_wind_direction(self):
         """returns the current wind direction as tuple (direction in degrees, cardinal direction)"""
-        self.wind_direction
-        (('N', (337.5, 360)), ('N', (0, 22.5)), ('NE', (22.5, 67.5)), ('E', (67.5, 112.5)), ('SE', (112.5, 157.5)), ('S', (157.5, 202.5)), ('SW', (202.5, 247.5)), ('W', (247.5, 292.5)), ('NW', (292.5, 337.5)))
+        def cardinal_direction(degrees):# OWM API should technically supply cardinal values, but in case it doesn't, we'll calculate them here.
+            if (degrees <= 360.0 and degrees > 337.5) or (degrees <= 22.5 and degrees > 0.0):
+                return 'N'
+            elif degrees <= 67.5 and degrees > 22.5:
+                return 'NE'
+            elif degrees <= 112.5 and degrees > 67.5:
+                return 'E'
+            elif degrees <= 157.5 and degrees > 112.5:
+                return 'SE'
+            elif degrees <= 202.5 and degrees > 157.5:
+                return 'S'
+            elif degrees <= 247.5 and degrees > 202.5:
+                return 'SW'                
+             elif degrees <= 292.5 and degrees > 247.5:
+                return 'W'
+            elif degrees <= 337.5 and degrees > 292.5:
+                return 'NW'
+            else:
+                'Unknown'
+                
+        return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
