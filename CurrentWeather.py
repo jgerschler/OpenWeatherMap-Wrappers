@@ -62,15 +62,19 @@ class CurrentWeather(object):
         
     def get_pressure(self):
         """returns the current barometric pressure as tuple (value, unit)"""
+        return (self.pressure, "hPa")
     
     def get_temp(self):
         """returns the current temperature as tuple (value, unit)"""
+        return (self.temp, "Celsius")
     
     def get_humidity(self):
         """returns the current humidity as tuple (value, unit)"""
+        return (self.humidity, "%")
     
     def get_wind_speed(self):
         """returns the current wind speed as tuple (value, unit)"""
+        return (self.wind_speed, "meters/second")
     
     def get_wind_direction(self):
         """returns the current wind direction as tuple (direction in degrees, cardinal direction)"""
