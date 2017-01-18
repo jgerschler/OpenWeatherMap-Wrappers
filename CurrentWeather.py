@@ -1,12 +1,18 @@
 import json
 from datetime import datetime
+from urllib2 import Request, urlopen, URLError
 
 class CurrentWeather(object):
     def __init__(self):
         pass
 
-    def json_decode(self, message):
-        self.decoded_string = json.loads(message)
+    def connect(self, zipcode, api_key):
+        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+zipcode+',us&APPID='+api_key)
+        try:
+            data = urlopen(request).read()
+        except URLError:
+            print("Could not connect to API server. Is your key correct?")
+        self.decoded_string = json.loads(data)
         self.data_collection_time = self.decoded_string.get('dt', 'unknown')
         self.cloud_cover = self.decoded_string.get('clouds', 'unknown').get('all', 'unknown')
         self.city_name = self.decoded_string.get('name', 'unknown')
@@ -26,6 +32,7 @@ class CurrentWeather(object):
         self.humidity = self.decoded_string.get('main', 'unknown').get('humidity', 'unknown')
         self.city_id = self.decoded_string.get('id', 'unknown')
         self.wind_speed = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
+        self.wind_gust = self.decoded_string.get('wind', 'unknown').get('gust', 'unknown')
         self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
         
     def get_data_collection_time(self):
