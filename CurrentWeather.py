@@ -34,4 +34,30 @@ class CurrentWeather(object):
         
     def get_cloud_cover(self):
         """returns cloud cover as tuple (value, unit)"""
-        return 
+        return (self.cloud_cover, "%")
+        
+    def get_location(self):
+        """returns city and country as string"""
+        return "{0}, {1}".format(self.city_name, self.country)
+        
+    def get_lat_lon(self):
+        """returns latitude and longitude as tuple (latitude, longitude)"""
+        return (self.latitude, self.longitude)
+        
+    def get_sunrise(self):
+        """returns sunrise time as tuple (UTC UNIX time, UTC time)"""
+        return (self.sunrise_time, datetime.fromtimestamp(int(self.sunrise_time)).strftime('%Y-%m-%d %H:%M:%S'))
+        
+    def get_sunset(self):
+        """returns sunrise time as tuple (UTC UNIX time, UTC time)"""
+        return (self.sunset_time, datetime.fromtimestamp(int(self.sunset_time)).strftime('%Y-%m-%d %H:%M:%S'))
+        
+    def get_weather(self):
+        """returns a tuple: (weather group, weather description)"""
+        return (self.weather_group, self.weather_description)
+        
+    def get_rain_3h(self):
+        """returns the quantity of rain that has fallen in the last 3 hours as tuple (value, unit)"""
+        return (self.rain_3h, "meter")
+        
+    
