@@ -60,4 +60,19 @@ class CurrentWeather(object):
         """returns the quantity of rain that has fallen in the last 3 hours as tuple (value, unit)"""
         return (self.rain_3h, "meter")
         
+    def get_pressure(self):
+        """returns the current barometric pressure as tuple (value, unit)"""
     
+    def get_temp(self):
+        """returns the current temperature as tuple (value, unit)"""
+    
+    def get_humidity(self):
+        """returns the current humidity as tuple (value, unit)"""
+    
+    def get_wind_speed(self):
+        """returns the current wind speed as tuple (value, unit)"""
+    
+    def get_wind_direction(self):
+        """returns the current wind direction as tuple (direction in degrees, cardinal direction)"""
+        self.wind_direction
+        (('N', (337.5, 360)), ('N', (0, 22.5)), ('NE', (22.5, 67.5)), ('E', (67.5, 112.5)), ('SE', (112.5, 157.5)), ('S', (157.5, 202.5)), ('SW', (202.5, 247.5)), ('W', (247.5, 292.5)), ('NW', (292.5, 337.5)))
