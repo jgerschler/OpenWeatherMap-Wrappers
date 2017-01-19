@@ -4,11 +4,13 @@ from urllib2 import Request, urlopen, URLError# update to use requests module?
 
 class CurrentWeather(object):
     """A class for getting the current US weather using the OpenWeatherMap API."""
-    def __init__(self):
-        pass
-
-    def connect(self, zipcode, api_key):# may need to add more try/except statments; API results seem to deviate from documentation
-        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+zipcode+',us&APPID='+api_key)
+    def __init__(self, zipcode, api_id)
+        self.zipcode = zipcode
+        self.api_id = api_id
+    
+    def connect(self):# may need to add more try/except statments; API results seem to deviate from documentation
+        """Connect to OpenWeatherMap server and pull weather data."""
+        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
@@ -39,7 +41,8 @@ class CurrentWeather(object):
         self.wind_gust = self.decoded_string.get('wind', 'unknown').get('gust', 'unknown')
         self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
         
-    def parser(self, data):# for directly parsing data string
+    def parse(self, data):# for directly parsing data string
+        """Parse data directly from a string."""
         self.decoded_string = json.loads(data)
         self.data_collection_time = self.decoded_string.get('dt', 'unknown')
         self.cloud_cover = self.decoded_string.get('clouds', 'unknown').get('all', 'unknown')
