@@ -4,9 +4,9 @@ from urllib2 import Request, urlopen, URLError# update to use requests module?
 
 class CurrentWeather(object):
     """A class for getting the current US weather using the OpenWeatherMap API."""
-    def __init__(self, zipcode, api_id):
+    def __init__(self, zipcode, api_key):
         self.zipcode = zipcode
-        self.api_id = api_id
+        self.api_key = api_key
     
     def connect(self):# may need to add more try/except statments; API results seem to deviate from documentation
         """Connect to OpenWeatherMap server and pull weather data."""
@@ -50,7 +50,7 @@ class CurrentWeather(object):
             file.write(str(self.zipcode)+","+str(self.data_collection_time)+","+str(self.cloud_cover)+","+str(self.weather_group)+","+str(self.weather_description)+","+str(self.pressure)+","+
             str(self.temp)+","+str(self.humidity)+","+str(self.wind_speed)+","+str(self.wind_direction)+"\n")
             print("Data point {0} recorded").format(str(i+1))
-            if i < (max_data_points-1)
+            if i < (max_data_points-1):
                 time.sleep(interval*60)
         file.close()
         
@@ -154,7 +154,42 @@ class CurrentWeather(object):
                 'Unknown'
                 
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
-
+        
+    def get_co(self):# these functions below are still not finished!
+        pass
+        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        try:
+            data = urlopen(request).read()
+        except URLError:
+            print("Could not connect to API server. Is your key correct?")
+        self.decoded_string = json.loads(data)
+        
+    def get_o3(self):
+        pass
+        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        try:
+            data = urlopen(request).read()
+        except URLError:
+            print("Could not connect to API server. Is your key correct?")
+        self.decoded_string = json.loads(data)
+        
+    def get_so2(self):
+        pass
+        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        try:
+            data = urlopen(request).read()
+        except URLError:
+            print("Could not connect to API server. Is your key correct?")
+        self.decoded_string = json.loads(data)
+        
+    def get_no2(self):
+        pass
+        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        try:
+            data = urlopen(request).read()
+        except URLError:
+            print("Could not connect to API server. Is your key correct?")
+        self.decoded_string = json.loads(data)
 
 if __name__ == '__main__':
     print("Suggested uses: Import as a module, or run in an IDE.")

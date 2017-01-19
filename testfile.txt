@@ -1,0 +1,4 @@
+zipcode,data_collection_time,cloud_cover,weather_group,weather_description,pressure,temp,humidity,wind_speed,wind_direction
+97520,1484844780,90,Rain,light rain,1006,274,99,2.6,10
+97520,1484844960,90,Rain,light rain,1006,274.1,100,1.01,191.505
+97520,1484844960,90,Rain,light rain,1006,274.09,100,1.01,191.505
