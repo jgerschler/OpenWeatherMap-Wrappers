@@ -37,7 +37,7 @@ class CurrentWeather(object):
         self.temp = self.decoded_string.get('main', 'unknown').get('temp', 'unknown')
         self.humidity = self.decoded_string.get('main', 'unknown').get('humidity', 'unknown')
         self.city_id = self.decoded_string.get('id', 'unknown')
-        self.wind_speed = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
+        self.wind_speed = self.decoded_string.get('wind', 'unknown').get('speed', 'unknown')
         self.wind_gust = self.decoded_string.get('wind', 'unknown').get('gust', 'unknown')
         self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
         
@@ -46,11 +46,12 @@ class CurrentWeather(object):
         file = open(filename, 'w')
         file.write("zipcode,data_collection_time,cloud_cover,weather_group,weather_description,pressure,temp,humidity,wind_speed,wind_direction\n")
         for i in range(max_data_points):
-            self.parse(data)
+            self.connect()
             file.write(str(self.zipcode)+","+str(self.data_collection_time)+","+str(self.cloud_cover)+","+str(self.weather_group)+","+str(self.weather_description)+","+str(self.pressure)+","+
             str(self.temp)+","+str(self.humidity)+","+str(self.wind_speed)+","+str(self.wind_direction)+"\n")
             print("Data point {0} recorded").format(str(i+1))
-            time.sleep(interval*60)
+            if i < (max_data_points-1)
+                time.sleep(interval*60)
         file.close()
         
         
