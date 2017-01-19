@@ -42,11 +42,16 @@ class CurrentWeather(object):
         self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
         
     def record_data(self, interval, filename, max_data_points):
+        """periodically connect to API and write results to CSV file."""
         file = open(filename, 'w')
         file.write("zipcode,data_collection_time,cloud_cover,weather_group,weather_description,pressure,temp,humidity,wind_speed,wind_direction\n")
-        for i in range(interval):
+        for i in range(max_data_points):
             self.connect()
-            file.write(self.zipcode+",")
+            file.write(self.zipcode+","+self.data_collection_time+","+self.cloud_cover+","+self.weather_group+","+self.weather_description+","+self.pressure+","+
+            self.temp+","+self.humidity+","+self.wind_speed+","+self.wind_direction+"\n")
+            print("Data point {0} recorded").format(str(i+1)
+            time.sleep(interval*60)
+        file.close()
         
         
     def parse(self, data):# for directly parsing data string
