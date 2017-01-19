@@ -155,7 +155,7 @@ class CurrentWeather(object):
                 
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
         
-    def get_co(self):# these functions below are still not finished!
+    def get_co(self):# these functions don't currently seem to work very well for locations inside the US
         pass
         request = Request('http://api.openweathermap.org/pollution/v1/co/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
