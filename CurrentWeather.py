@@ -1,4 +1,4 @@
-import json
+import json, time
 from datetime import datetime
 from urllib2 import Request, urlopen, URLError# update to use requests module?
 
@@ -30,7 +30,7 @@ class CurrentWeather(object):
         try:
             self.rain_3h = self.decoded_string.get('rain', 'unknown').get('3h', 'unknown')
         except:
-            self.rain_3h = None
+            self.rain_3h = 0
         self.pressure = self.decoded_string.get('main', 'unknown').get('pressure', 'unknown')
         self.temp_min = self.decoded_string.get('main', 'unknown').get('temp_min', 'unknown')
         self.temp_max = self.decoded_string.get('main', 'unknown').get('temp_max', 'unknown')
@@ -40,6 +40,14 @@ class CurrentWeather(object):
         self.wind_speed = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
         self.wind_gust = self.decoded_string.get('wind', 'unknown').get('gust', 'unknown')
         self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
+        
+    def record_data(self, interval, filename, max_data_points):
+        file = open(filename, 'w')
+        file.write("zipcode,data_collection_time,cloud_cover,weather_group,weather_description,pressure,temp,humidity,wind_speed,wind_direction\n")
+        for i in range(interval):
+            self.connect()
+            file.write(self.zipcode+",")
+        
         
     def parse(self, data):# for directly parsing data string
         """Parse data directly from a string."""
