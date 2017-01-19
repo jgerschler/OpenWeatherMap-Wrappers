@@ -157,7 +157,7 @@ class CurrentWeather(object):
         
     def get_co(self):# these functions below are still not finished!
         pass
-        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        request = Request('http://api.openweathermap.org/pollution/v1/co/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
@@ -166,7 +166,7 @@ class CurrentWeather(object):
         
     def get_o3(self):
         pass
-        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        request = Request('http://api.openweathermap.org/pollution/v1/o3/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
@@ -175,7 +175,7 @@ class CurrentWeather(object):
         
     def get_so2(self):
         pass
-        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        request = Request('http://api.openweathermap.org/pollution/v1/so2/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
@@ -184,7 +184,7 @@ class CurrentWeather(object):
         
     def get_no2(self):
         pass
-        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        request = Request('http://api.openweathermap.org/pollution/v1/no2/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
