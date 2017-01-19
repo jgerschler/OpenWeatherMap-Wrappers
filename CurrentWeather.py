@@ -1,13 +1,13 @@
 import json
 from datetime import datetime
-from urllib2 import Request, urlopen, URLError
+from urllib2 import Request, urlopen, URLError# update to use requests module?
 
 class CurrentWeather(object):
-    """A class for getting the current weather using the OpenWeatherMap API."""
+    """A class for getting the current US weather using the OpenWeatherMap API."""
     def __init__(self):
         pass
 
-    def connect(self, zipcode, api_key):
+    def connect(self, zipcode, api_key):# may need to add more try/except statments; API results seem to deviate from documentation
         request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+zipcode+',us&APPID='+api_key)
         try:
             data = urlopen(request).read()
@@ -25,7 +25,10 @@ class CurrentWeather(object):
         self.weather_cond_id = self.decoded_string.get('weather', 'unknown')[0].get('id', 'unknown')# multiple weather conditions can be included here. 
         self.weather_group = self.decoded_string.get('weather', 'unknown')[0].get('main', 'unknown')# currently, we'll just get the primary.
         self.weather_description = self.decoded_string.get('weather', 'unknown')[0].get('description', 'unknown')
-        self.rain_3h = self.decoded_string.get('rain', 'unknown').get('3h', 'unknown')
+        try:
+            self.rain_3h = self.decoded_string.get('rain', 'unknown').get('3h', 'unknown')
+        except:
+            self.rain_3h = None
         self.pressure = self.decoded_string.get('main', 'unknown').get('pressure', 'unknown')
         self.temp_min = self.decoded_string.get('main', 'unknown').get('temp_min', 'unknown')
         self.temp_max = self.decoded_string.get('main', 'unknown').get('temp_max', 'unknown')
@@ -36,7 +39,7 @@ class CurrentWeather(object):
         self.wind_gust = self.decoded_string.get('wind', 'unknown').get('gust', 'unknown')
         self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
         
-    def parser(self, data):
+    def parser(self, data):# for directly parsing data string
         self.decoded_string = json.loads(data)
         self.data_collection_time = self.decoded_string.get('dt', 'unknown')
         self.cloud_cover = self.decoded_string.get('clouds', 'unknown').get('all', 'unknown')
@@ -49,7 +52,10 @@ class CurrentWeather(object):
         self.weather_cond_id = self.decoded_string.get('weather', 'unknown')[0].get('id', 'unknown')
         self.weather_group = self.decoded_string.get('weather', 'unknown')[0].get('main', 'unknown')
         self.weather_description = self.decoded_string.get('weather', 'unknown')[0].get('description', 'unknown')
-        self.rain_3h = self.decoded_string.get('rain', 'unknown').get('3h', 'unknown')
+        try:
+            self.rain_3h = self.decoded_string.get('rain', 'unknown').get('3h', 'unknown')
+        except:
+            self.rain_3h = None
         self.pressure = self.decoded_string.get('main', 'unknown').get('pressure', 'unknown')
         self.temp_min = self.decoded_string.get('main', 'unknown').get('temp_min', 'unknown')
         self.temp_max = self.decoded_string.get('main', 'unknown').get('temp_max', 'unknown')
@@ -90,15 +96,15 @@ class CurrentWeather(object):
         
     def get_rain_3h(self):
         """returns the quantity of rain that has fallen in the last 3 hours as tuple (value, unit)"""
-        return (self.rain_3h, "meter")
+        return (self.rain_3h, "cm")
         
     def get_pressure(self):
         """returns the current barometric pressure as tuple (value, unit)"""
-        return (self.pressure, "hPa")
+        return (self.pressure, "mmHg")
     
     def get_temp(self):
         """returns the current temperature as tuple (value, unit)"""
-        return (self.temp, "Celsius")
+        return (self.temp, "K")
     
     def get_humidity(self):
         """returns the current humidity as tuple (value, unit)"""
@@ -133,38 +139,5 @@ class CurrentWeather(object):
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
 
 
-
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+if __name__ == '__main__':
+    print("Suggested uses: Import as a module, or run in an IDE.")
