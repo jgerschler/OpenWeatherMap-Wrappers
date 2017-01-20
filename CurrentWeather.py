@@ -15,31 +15,31 @@ class CurrentWeather(object):
             data = urlopen(request).read()
         except URLError:
             print("Could not connect to API server. Is your key correct?")
-        self.decoded_string = json.loads(data)
-        self.data_collection_time = self.decoded_string.get('dt', 'unknown')
-        self.cloud_cover = self.decoded_string.get('clouds', 'unknown').get('all', 'unknown')
-        self.city_name = self.decoded_string.get('name', 'unknown')
-        self.longitude = self.decoded_string.get('coord', 'unknown').get('lon', 'unknown')
-        self.latitude = self.decoded_string.get('coord', 'unknown').get('lat', 'unknown')
-        self.country = self.decoded_string.get('sys', 'unknown').get('country', 'unknown')
-        self.sunset_time = self.decoded_string.get('sys', 'unknown').get('sunset', 'unknown')
-        self.sunrise_time = self.decoded_string.get('sys', 'unknown').get('sunrise', 'unknown')
-        self.weather_cond_id = self.decoded_string.get('weather', 'unknown')[0].get('id', 'unknown')# multiple weather conditions can be included here. 
-        self.weather_group = self.decoded_string.get('weather', 'unknown')[0].get('main', 'unknown')# currently, we'll just get the primary.
-        self.weather_description = self.decoded_string.get('weather', 'unknown')[0].get('description', 'unknown')
+        self.decoded_dict = json.loads(data)
+        self.data_collection_time = self.decoded_dict.get('dt', 'unknown')
+        self.cloud_cover = self.decoded_dict.get('clouds', 'unknown').get('all', 'unknown')
+        self.city_name = self.decoded_dict.get('name', 'unknown')
+        self.longitude = self.decoded_dict.get('coord', 'unknown').get('lon', 'unknown')
+        self.latitude = self.decoded_dict.get('coord', 'unknown').get('lat', 'unknown')
+        self.country = self.decoded_dict.get('sys', 'unknown').get('country', 'unknown')
+        self.sunset_time = self.decoded_dict.get('sys', 'unknown').get('sunset', 'unknown')
+        self.sunrise_time = self.decoded_dict.get('sys', 'unknown').get('sunrise', 'unknown')
+        self.weather_cond_id = self.decoded_dict.get('weather', 'unknown')[0].get('id', 'unknown')# multiple weather conditions can be included here. 
+        self.weather_group = self.decoded_dict.get('weather', 'unknown')[0].get('main', 'unknown')# currently, we'll just get the primary.
+        self.weather_description = self.decoded_dict.get('weather', 'unknown')[0].get('description', 'unknown')
         try:
-            self.rain_3h = self.decoded_string.get('rain', 'unknown').get('3h', 'unknown')
+            self.rain_3h = self.decoded_dict.get('rain', 'unknown').get('3h', 'unknown')
         except:
             self.rain_3h = 0
-        self.pressure = self.decoded_string.get('main', 'unknown').get('pressure', 'unknown')
-        self.temp_min = self.decoded_string.get('main', 'unknown').get('temp_min', 'unknown')
-        self.temp_max = self.decoded_string.get('main', 'unknown').get('temp_max', 'unknown')
-        self.temp = self.decoded_string.get('main', 'unknown').get('temp', 'unknown')
-        self.humidity = self.decoded_string.get('main', 'unknown').get('humidity', 'unknown')
-        self.city_id = self.decoded_string.get('id', 'unknown')
-        self.wind_speed = self.decoded_string.get('wind', 'unknown').get('speed', 'unknown')
-        self.wind_gust = self.decoded_string.get('wind', 'unknown').get('gust', 'unknown')
-        self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
+        self.pressure = self.decoded_dict.get('main', 'unknown').get('pressure', 'unknown')
+        self.temp_min = self.decoded_dict.get('main', 'unknown').get('temp_min', 'unknown')
+        self.temp_max = self.decoded_dict.get('main', 'unknown').get('temp_max', 'unknown')
+        self.temp = self.decoded_dict.get('main', 'unknown').get('temp', 'unknown')
+        self.humidity = self.decoded_dict.get('main', 'unknown').get('humidity', 'unknown')
+        self.city_id = self.decoded_dict.get('id', 'unknown')
+        self.wind_speed = self.decoded_dict.get('wind', 'unknown').get('speed', 'unknown')
+        self.wind_gust = self.decoded_dict.get('wind', 'unknown').get('gust', 'unknown')
+        self.wind_direction = self.decoded_dict.get('wind', 'unknown').get('deg', 'unknown')
         
     def record_data(self, interval, filename, max_data_points):
         """periodically connect to API and write results to CSV file."""
@@ -57,31 +57,31 @@ class CurrentWeather(object):
         
     def parse(self, data):# for directly parsing data string
         """Parse data directly from a string."""
-        self.decoded_string = json.loads(data)
-        self.data_collection_time = self.decoded_string.get('dt', 'unknown')
-        self.cloud_cover = self.decoded_string.get('clouds', 'unknown').get('all', 'unknown')
-        self.city_name = self.decoded_string.get('name', 'unknown')
-        self.longitude = self.decoded_string.get('coord', 'unknown').get('lon', 'unknown')
-        self.latitude = self.decoded_string.get('coord', 'unknown').get('lat', 'unknown')
-        self.country = self.decoded_string.get('sys', 'unknown').get('country', 'unknown')
-        self.sunset_time = self.decoded_string.get('sys', 'unknown').get('sunset', 'unknown')
-        self.sunrise_time = self.decoded_string.get('sys', 'unknown').get('sunrise', 'unknown')
-        self.weather_cond_id = self.decoded_string.get('weather', 'unknown')[0].get('id', 'unknown')
-        self.weather_group = self.decoded_string.get('weather', 'unknown')[0].get('main', 'unknown')
-        self.weather_description = self.decoded_string.get('weather', 'unknown')[0].get('description', 'unknown')
+        self.decoded_dict = json.loads(data)
+        self.data_collection_time = self.decoded_dict.get('dt', 'unknown')
+        self.cloud_cover = self.decoded_dict.get('clouds', 'unknown').get('all', 'unknown')
+        self.city_name = self.decoded_dict.get('name', 'unknown')
+        self.longitude = self.decoded_dict.get('coord', 'unknown').get('lon', 'unknown')
+        self.latitude = self.decoded_dict.get('coord', 'unknown').get('lat', 'unknown')
+        self.country = self.decoded_dict.get('sys', 'unknown').get('country', 'unknown')
+        self.sunset_time = self.decoded_dict.get('sys', 'unknown').get('sunset', 'unknown')
+        self.sunrise_time = self.decoded_dict.get('sys', 'unknown').get('sunrise', 'unknown')
+        self.weather_cond_id = self.decoded_dict.get('weather', 'unknown')[0].get('id', 'unknown')
+        self.weather_group = self.decoded_dict.get('weather', 'unknown')[0].get('main', 'unknown')
+        self.weather_description = self.decoded_dict.get('weather', 'unknown')[0].get('description', 'unknown')
         try:
-            self.rain_3h = self.decoded_string.get('rain', 'unknown').get('3h', 'unknown')
+            self.rain_3h = self.decoded_dict.get('rain', 'unknown').get('3h', 'unknown')
         except:
             self.rain_3h = None
-        self.pressure = self.decoded_string.get('main', 'unknown').get('pressure', 'unknown')
-        self.temp_min = self.decoded_string.get('main', 'unknown').get('temp_min', 'unknown')
-        self.temp_max = self.decoded_string.get('main', 'unknown').get('temp_max', 'unknown')
-        self.temp = self.decoded_string.get('main', 'unknown').get('temp', 'unknown')
-        self.humidity = self.decoded_string.get('main', 'unknown').get('humidity', 'unknown')
-        self.city_id = self.decoded_string.get('id', 'unknown')
-        self.wind_speed = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
-        self.wind_gust = self.decoded_string.get('wind', 'unknown').get('gust', 'unknown')
-        self.wind_direction = self.decoded_string.get('wind', 'unknown').get('deg', 'unknown')
+        self.pressure = self.decoded_dict.get('main', 'unknown').get('pressure', 'unknown')
+        self.temp_min = self.decoded_dict.get('main', 'unknown').get('temp_min', 'unknown')
+        self.temp_max = self.decoded_dict.get('main', 'unknown').get('temp_max', 'unknown')
+        self.temp = self.decoded_dict.get('main', 'unknown').get('temp', 'unknown')
+        self.humidity = self.decoded_dict.get('main', 'unknown').get('humidity', 'unknown')
+        self.city_id = self.decoded_dict.get('id', 'unknown')
+        self.wind_speed = self.decoded_dict.get('wind', 'unknown').get('deg', 'unknown')
+        self.wind_gust = self.decoded_dict.get('wind', 'unknown').get('gust', 'unknown')
+        self.wind_direction = self.decoded_dict.get('wind', 'unknown').get('deg', 'unknown')
         
     def get_data_collection_time(self):
         """returns data collection time as tuple (UTC UNIX time, UTC time)"""
@@ -155,41 +155,37 @@ class CurrentWeather(object):
                 
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
         
-    def get_co(self):# these functions don't currently seem to work very well for locations inside the US
-        pass
+    def connect_co(self):# these functions don't currently seem to work very well for locations inside the US
         request = Request('http://api.openweathermap.org/pollution/v1/co/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
             print("Could not connect to API server. Is your key correct?")
-        self.decoded_string = json.loads(data)
+        self.decoded_dict = json.loads(data)
         
-    def get_o3(self):
-        pass
+    def connect_o3(self):
         request = Request('http://api.openweathermap.org/pollution/v1/o3/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
             print("Could not connect to API server. Is your key correct?")
-        self.decoded_string = json.loads(data)
+        self.decoded_dict = json.loads(data)
         
-    def get_so2(self):
-        pass
+    def connect_so2(self):
         request = Request('http://api.openweathermap.org/pollution/v1/so2/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
             print("Could not connect to API server. Is your key correct?")
-        self.decoded_string = json.loads(data)
+        self.decoded_dict = json.loads(data)
         
-    def get_no2(self):
-        pass
+    def connect_no2(self):
         request = Request('http://api.openweathermap.org/pollution/v1/no2/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
         except URLError:
             print("Could not connect to API server. Is your key correct?")
-        self.decoded_string = json.loads(data)
+        self.decoded_dict = json.loads(data)
 
 if __name__ == '__main__':
     print("Suggested uses: Import as a module, or run in an IDE.")
