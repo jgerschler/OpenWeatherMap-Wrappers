@@ -186,6 +186,22 @@ class CurrentWeather(object):
         except URLError:
             print("Could not connect to API server. Is your key correct?")
         self.decoded_dict = json.loads(data)
+        if self.decoded_dict['message']:
+            return "Data unavailable"
+        try:
+            self.no2_trop = (self.decoded_dict.get('data').get('no2_trop').get('value',0), self.decoded_dict.get('data').get('no2_trop').get('precision',0))
+        except:
+            self.no2_trop = None
+        try:
+            self.no2_strat = (self.decoded_dict.get('data').get('no2_strat').get('value',0), self.decoded_dict.get('data').get('no2_strat').get('precision',0))
+        except:
+            self.no2_strat = None
+        try:
+            self.no2 = (self.decoded_dict.get('data').get('no2').get('value',0), self.decoded_dict.get('data').get('no2').get('precision',0))
+        except:
+            self.no2 = None
+        self.no2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
+        self.no2_datetime = self.decoded_dict.get('time')
 
 if __name__ == '__main__':
     print("Suggested uses: Import as a module, or run in an IDE.")
