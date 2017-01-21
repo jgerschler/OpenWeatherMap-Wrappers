@@ -198,7 +198,16 @@ class CurrentWeather(object):
         except URLError:
             print("Could not connect to API server. Is your key correct?")
         self.decoded_dict = json.loads(data)
-        
+        if self.decoded_dict.get('message') == 'not found':
+            return "Data unavailable"
+        try:
+            self.so2 = []
+            for entry in self.decoded_dict['data']:
+                self.so2.append((entry['pressure'], entry['value'], entry['precision']))
+        except:
+            self.so2 = None
+        self.so2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
+        self.so2_datetime = self.decoded_dict.get('time')
     def connect_no2(self):
         """connects to OpenWeatherMap nitrogen dioxide API"""
         request = Request('http://api.openweathermap.org/pollution/v1/no2/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
