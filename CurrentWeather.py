@@ -166,13 +166,13 @@ class CurrentWeather(object):
         if self.decoded_dict.get('message') == 'not found':
             return "Data unavailable"
         try:
-            co = []
+            self.co = []
             for entry in self.decoded_dict['data']:
-                co.append((entry['pressure'], entry['value'], entry['precision']))
+                self.co.append((entry['pressure'], entry['value'], entry['precision']))
         except:
-            co = None
-        co_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
-        co_datetime = self.decoded_dict.get('time')
+            self.co = None
+        self.co_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
+        self.co_datetime = self.decoded_dict.get('time')
         
     def connect_o3(self):
         """connects to OpenWeatherMap ozone API"""
@@ -182,7 +182,14 @@ class CurrentWeather(object):
         except URLError:
             print("Could not connect to API server. Is your key correct?")
         self.decoded_dict = json.loads(data)
-        
+        if self.decoded_dict.get('message') == 'not found':
+            print("Data unavailable")
+        try:
+            self.o3 = self.decoded_dict.get('data')
+            self.o3_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
+            self.o3_datetime = self.decoded_dict.get('time')
+        except:
+            self.o3, self.o3_location, self.o3_datetime = None, None, None        
     def connect_so2(self):
         """connects to OpenWeatherMap sulfur dioxide API"""
         request = Request('http://api.openweathermap.org/pollution/v1/so2/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
