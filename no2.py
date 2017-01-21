@@ -11,10 +11,8 @@ data = """{"time":"2017-01-17T13:38:57Z",
 
 def get_data(data):
     data_dict = json.loads(data)
-
     if data_dict['message']:
         return "Data unavailable"
-
     try:
         no2_trop = (data_dict.get('data').get('no2_trop').get('value',0), data_dict.get('data').get('no2_trop').get('precision',0))
     except:
@@ -28,7 +26,5 @@ def get_data(data):
     except:
         no2 = None
     no2_location = (data_dict.get('location').get('latitude'), data_dict.get('location').get('longitude'))
-        
-
     no2_datetime = data_dict.get('time')
-    print("got it all")
+
