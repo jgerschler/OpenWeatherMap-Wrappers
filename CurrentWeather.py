@@ -1,6 +1,6 @@
 import json, time
 from datetime import datetime
-from urllib2 import Request, urlopen, URLError# update to use requests module?
+from urllib2 import Request, urlopen, URLError, HTTPError# update to use requests module?
 
 class CurrentWeather(object):
     """A class for getting the current US weather using the OpenWeatherMap API."""
@@ -154,25 +154,24 @@ class CurrentWeather(object):
                 'Unknown'
                 
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
-        
-    def connect_co(self):# these functions don't currently seem to work very well for locations inside the US
+# not finished below this point!        
+    def connect_co(self, latitude=0.0, longitude=0.0):# these functions don't currently seem to work very well for locations inside the US
         """connects to OpenWeatherMap carbon monoxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/co/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
+        request = Request('http://api.openweathermap.org/pollution/v1/co/{2},{1}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
         try:
             data = urlopen(request).read()
-        except URLError:
-            print("Could not connect to API server. Is your key correct?")
+        except HTTPError:
+            print("No current CO data available.")
+            return 0
         self.decoded_dict = json.loads(data)
         if self.decoded_dict.get('message') == 'not found':
             return "Data unavailable"
-        try:
-            self.co = []
-            for entry in self.decoded_dict['data']:
-                self.co.append((entry['pressure'], entry['value'], entry['precision']))
-        except:
-            self.co = None
+        self.co = []
+        for entry in self.decoded_dict['data']:
+            self.co.append((entry['pressure'], entry['value'], entry['precision']))
         self.co_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.co_datetime = self.decoded_dict.get('time')
+        return 1
         
     def connect_o3(self):
         """connects to OpenWeatherMap ozone API"""
