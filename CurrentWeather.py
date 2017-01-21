@@ -1,6 +1,6 @@
 import json, time
 from datetime import datetime
-from urllib2 import Request, urlopen, URLError, HTTPError# update to use requests module?
+from urllib2 import Request, urlopen, HTTPError# update to use requests module?
 
 class CurrentWeather(object):
     """A class for getting the current US weather using the OpenWeatherMap API."""
@@ -13,9 +13,12 @@ class CurrentWeather(object):
         request = Request('http://api.openweathermap.org/data/2.5/weather?zip={0},us&APPID={1}'.format(self.zipcode, self.api_key))
         try:
             data = urlopen(request).read()
-        except URLError:
-            print("Could not connect to API server. Is your key correct?")
+        except HTTPError:
+            print("No current weather data available.")
+            return 0
         self.decoded_dict = json.loads(data)
+        if self.decoded_dict.get('message') == 'not found':
+            return "Data unavailable"
         self.data_collection_time = self.decoded_dict.get('dt', 'unknown')
         self.cloud_cover = self.decoded_dict.get('clouds', 'unknown').get('all', 'unknown')
         self.city_name = self.decoded_dict.get('name', 'unknown')
@@ -40,6 +43,7 @@ class CurrentWeather(object):
         self.wind_speed = self.decoded_dict.get('wind', 'unknown').get('speed', 'unknown')
         self.wind_gust = self.decoded_dict.get('wind', 'unknown').get('gust', 'unknown')
         self.wind_direction = self.decoded_dict.get('wind', 'unknown').get('deg', 'unknown')
+        return 1
         
     def record_data(self, interval, filename, max_data_points):
         """periodically connect to API and write results to CSV file."""
@@ -154,7 +158,7 @@ class CurrentWeather(object):
                 'Unknown'
                 
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
-# not finished below this point!        
+       
     def connect_co(self, latitude=0.0, longitude=10.0):# these functions don't currently seem to work very well for locations inside the US
         """connects to OpenWeatherMap carbon monoxide API"""
         request = Request('http://api.openweathermap.org/pollution/v1/co/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
@@ -172,63 +176,64 @@ class CurrentWeather(object):
         self.co_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.co_datetime = self.decoded_dict.get('time')
         return 1
-        
-    def connect_o3(self):
+     
+    def connect_o3(self, latitude=0.0, longitude=10.0):
         """connects to OpenWeatherMap ozone API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/o3/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
+        request = Request('http://api.openweathermap.org/pollution/v1/o3/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
         try:
             data = urlopen(request).read()
-        except URLError:
-            print("Could not connect to API server. Is your key correct?")
-        self.decoded_dict = json.loads(data)
-        if self.decoded_dict.get('message') == 'not found':
-            print("Data unavailable")
-        try:
-            self.o3 = self.decoded_dict.get('data')
-            self.o3_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
-            self.o3_datetime = self.decoded_dict.get('time')
-        except:
-            self.o3, self.o3_location, self.o3_datetime = None, None, None        
-    def connect_so2(self):
-        """connects to OpenWeatherMap sulfur dioxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/so2/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
-        try:
-            data = urlopen(request).read()
-        except URLError:
-            print("Could not connect to API server. Is your key correct?")
+        except HTTPError:
+            print("No current O3 data available.")
+            return 0
         self.decoded_dict = json.loads(data)
         if self.decoded_dict.get('message') == 'not found':
             return "Data unavailable"
-        try:
-            self.so2 = []
-            for entry in self.decoded_dict['data']:
-                self.so2.append((entry['pressure'], entry['value'], entry['precision']))
-        except:
-            self.so2 = None
-        self.so2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
-        self.so2_datetime = self.decoded_dict.get('time')
-    def connect_no2(self):
-        """connects to OpenWeatherMap nitrogen dioxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/no2/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
+        self.o3 = self.decoded_dict.get('data')
+        self.o3_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
+        self.o3_datetime = self.decoded_dict.get('time')
+        return 1
+      
+    def connect_so2(self, latitude=0.0, longitude=10.0):
+        """connects to OpenWeatherMap sulfur dioxide API"""
+        request = Request('http://api.openweathermap.org/pollution/v1/so2/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
         try:
             data = urlopen(request).read()
-        except URLError:
-            return "Could not connect to API server. Is your key correct?"
+        except HTTPError:
+            print("No current SO2 data available.")
+            return 0
+        self.decoded_dict = json.loads(data)
+        if self.decoded_dict.get('message') == 'not found':
+            return "Data unavailable"
+        self.so2 = []
+        for entry in self.decoded_dict['data']:
+            self.so2.append((entry['pressure'], entry['value'], entry['precision']))
+        self.so2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
+        self.so2_datetime = self.decoded_dict.get('time')
+        return 1
+        
+    def connect_no2(self, latitude=0.0, longitude=10.0):
+        """connects to OpenWeatherMap nitrogen dioxide API"""
+        request = Request('http://api.openweathermap.org/pollution/v1/no2/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
+        try:
+            data = urlopen(request).read()
+        except HTTPError:
+            print("No current SO2 data available.")
+            return 0
         self.decoded_dict = json.loads(data)
         if self.decoded_dict.get('message') == 'not found':
             return "Data unavailable"
         try:
             self.no2_trop = (self.decoded_dict.get('data').get('no2_trop').get('value',0), self.decoded_dict.get('data').get('no2_trop').get('precision',0))
         except:
-            self.no2_trop = None
+            self.no2_trop = (None, None)
         try:
             self.no2_strat = (self.decoded_dict.get('data').get('no2_strat').get('value',0), self.decoded_dict.get('data').get('no2_strat').get('precision',0))
         except:
-            self.no2_strat = None
+            self.no2_strat = (None, None)
         try:
             self.no2 = (self.decoded_dict.get('data').get('no2').get('value',0), self.decoded_dict.get('data').get('no2').get('precision',0))
         except:
-            self.no2 = None
+            self.no2 = (None, None)
         self.no2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.no2_datetime = self.decoded_dict.get('time')
 
