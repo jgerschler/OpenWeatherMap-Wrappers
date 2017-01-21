@@ -163,6 +163,16 @@ class CurrentWeather(object):
         except URLError:
             print("Could not connect to API server. Is your key correct?")
         self.decoded_dict = json.loads(data)
+        if self.decoded_dict.get('message') == 'not found':
+            return "Data unavailable"
+        try:
+            co = []
+            for entry in self.decoded_dict['data']:
+                co.append((entry['pressure'], entry['value'], entry['precision']))
+        except:
+            co = None
+        co_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
+        co_datetime = self.decoded_dict.get('time')
         
     def connect_o3(self):
         """connects to OpenWeatherMap ozone API"""
