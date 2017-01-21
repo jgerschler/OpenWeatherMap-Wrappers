@@ -157,7 +157,7 @@ class CurrentWeather(object):
         
     def connect_co(self):# these functions don't currently seem to work very well for locations inside the US
         """connects to OpenWeatherMap carbon monoxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/co/0.0,10.0/current.json?appid={0}').format(self.api_key)
+        request = Request('http://api.openweathermap.org/pollution/v1/co/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
         try:
             data = urlopen(request).read()
         except URLError:
@@ -165,7 +165,8 @@ class CurrentWeather(object):
         self.decoded_dict = json.loads(data)
         
     def connect_o3(self):
-        request = Request('http://api.openweathermap.org/pollution/v1/o3/0.0,10.0/current.json?appid={0}').format(self.api_key)
+        """connects to OpenWeatherMap ozone API"""
+        request = Request('http://api.openweathermap.org/pollution/v1/o3/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
         try:
             data = urlopen(request).read()
         except URLError:
@@ -173,7 +174,8 @@ class CurrentWeather(object):
         self.decoded_dict = json.loads(data)
         
     def connect_so2(self):
-        request = Request('http://api.openweathermap.org/pollution/v1/so2/0.0,10.0/current.json?appid={0}').format(self.api_key)
+        """connects to OpenWeatherMap sulfur dioxide API"""
+        request = Request('http://api.openweathermap.org/pollution/v1/so2/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
         try:
             data = urlopen(request).read()
         except URLError:
@@ -181,8 +183,8 @@ class CurrentWeather(object):
         self.decoded_dict = json.loads(data)
         
     def connect_no2(self):
-        """connects to OpenWeatherMap nitrogren dioxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/no2/0.0,10.0/current.json?appid={0}').format(self.api_key)
+        """connects to OpenWeatherMap nitrogen dioxide API"""
+        request = Request('http://api.openweathermap.org/pollution/v1/no2/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
         try:
             data = urlopen(request).read()
         except URLError:
