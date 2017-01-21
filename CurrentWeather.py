@@ -156,6 +156,7 @@ class CurrentWeather(object):
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
         
     def connect_co(self):# these functions don't currently seem to work very well for locations inside the US
+        """connects to OpenWeatherMap carbon monoxide API"""
         request = Request('http://api.openweathermap.org/pollution/v1/co/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
@@ -180,6 +181,7 @@ class CurrentWeather(object):
         self.decoded_dict = json.loads(data)
         
     def connect_no2(self):
+        """connects to OpenWeatherMap nitrogren dioxide API"""
         request = Request('http://api.openweathermap.org/pollution/v1/no2/0.0,10.0/current.json?appid={0}').format(self.api_key)
         try:
             data = urlopen(request).read()
