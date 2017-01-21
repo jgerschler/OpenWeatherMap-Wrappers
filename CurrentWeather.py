@@ -184,9 +184,9 @@ class CurrentWeather(object):
         try:
             data = urlopen(request).read()
         except URLError:
-            print("Could not connect to API server. Is your key correct?")
+            return "Could not connect to API server. Is your key correct?"
         self.decoded_dict = json.loads(data)
-        if self.decoded_dict['message']:
+        if self.decoded_dict.get('message') == 'not found':
             return "Data unavailable"
         try:
             self.no2_trop = (self.decoded_dict.get('data').get('no2_trop').get('value',0), self.decoded_dict.get('data').get('no2_trop').get('precision',0))
