@@ -10,7 +10,7 @@ class CurrentWeather(object):
     
     def connect(self):# may need to add more try/except statments; API results seem to deviate from documentation
         """Connect to OpenWeatherMap server and pull weather data."""
-        request = Request('http://api.openweathermap.org/data/2.5/weather?zip='+self.zipcode+',us&APPID='+self.api_key)
+        request = Request('http://api.openweathermap.org/data/2.5/weather?zip={0},us&APPID={1}'.format(self.zipcode, self.api_key))
         try:
             data = urlopen(request).read()
         except URLError:
@@ -157,7 +157,7 @@ class CurrentWeather(object):
         
     def connect_co(self):# these functions don't currently seem to work very well for locations inside the US
         """connects to OpenWeatherMap carbon monoxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/co/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
+        request = Request('http://api.openweathermap.org/pollution/v1/co/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
         try:
             data = urlopen(request).read()
         except URLError:
@@ -176,7 +176,7 @@ class CurrentWeather(object):
         
     def connect_o3(self):
         """connects to OpenWeatherMap ozone API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/o3/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
+        request = Request('http://api.openweathermap.org/pollution/v1/o3/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
         try:
             data = urlopen(request).read()
         except URLError:
@@ -192,7 +192,7 @@ class CurrentWeather(object):
             self.o3, self.o3_location, self.o3_datetime = None, None, None        
     def connect_so2(self):
         """connects to OpenWeatherMap sulfur dioxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/so2/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
+        request = Request('http://api.openweathermap.org/pollution/v1/so2/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
         try:
             data = urlopen(request).read()
         except URLError:
@@ -210,7 +210,7 @@ class CurrentWeather(object):
         self.so2_datetime = self.decoded_dict.get('time')
     def connect_no2(self):
         """connects to OpenWeatherMap nitrogen dioxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/no2/{1},{2}/current.json?appid={0}').format(self.api_key,self.longitude,self.latitude)
+        request = Request('http://api.openweathermap.org/pollution/v1/no2/{1},{2}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
         try:
             data = urlopen(request).read()
         except URLError:
