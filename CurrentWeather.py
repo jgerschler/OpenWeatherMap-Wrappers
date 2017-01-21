@@ -8,7 +8,7 @@ class CurrentWeather(object):
         self.zipcode = zipcode
         self.api_key = api_key
     
-    def connect(self):# may need to add more try/except statments; API results seem to deviate from documentation
+    def connect(self):# may need to add more error-checking; API results seem to deviate from documentation
         """Connect to OpenWeatherMap server and pull weather data."""
         request = Request('http://api.openweathermap.org/data/2.5/weather?zip={0},us&APPID={1}'.format(self.zipcode, self.api_key))
         try:
@@ -155,10 +155,10 @@ class CurrentWeather(object):
             elif degrees <= 337.5 and degrees > 292.5:
                 return 'NW'
             else:
-                'Unknown'
-                
+                'Unknown'              
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
-       
+
+# need to continue work on sections below -- default lat/long is only for testing purposes and should be removed later. Need to round actual values to increase sampling distance!        
     def connect_co(self, latitude=0.0, longitude=10.0):# these functions don't currently seem to work very well for locations inside the US
         """connects to OpenWeatherMap carbon monoxide API"""
         request = Request('http://api.openweathermap.org/pollution/v1/co/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
@@ -176,6 +176,9 @@ class CurrentWeather(object):
         self.co_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.co_datetime = self.decoded_dict.get('time')
         return 1
+        
+    def get_co_details(self):
+        pass
      
     def connect_o3(self, latitude=0.0, longitude=10.0):
         """connects to OpenWeatherMap ozone API"""
@@ -192,7 +195,10 @@ class CurrentWeather(object):
         self.o3_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.o3_datetime = self.decoded_dict.get('time')
         return 1
-      
+
+    def get_o3_details(self):
+        pass
+        
     def connect_so2(self, latitude=0.0, longitude=10.0):
         """connects to OpenWeatherMap sulfur dioxide API"""
         request = Request('http://api.openweathermap.org/pollution/v1/so2/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
@@ -210,6 +216,9 @@ class CurrentWeather(object):
         self.so2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.so2_datetime = self.decoded_dict.get('time')
         return 1
+
+    def get_so2_details(self):
+        pass
         
     def connect_no2(self, latitude=0.0, longitude=10.0):
         """connects to OpenWeatherMap nitrogen dioxide API"""
@@ -237,5 +246,8 @@ class CurrentWeather(object):
         self.no2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.no2_datetime = self.decoded_dict.get('time')
 
+    def get_no2_details(self):
+        pass
+        
 if __name__ == '__main__':
     print("Suggested uses: Import as a module, or run in an IDE.")
