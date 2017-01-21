@@ -155,9 +155,9 @@ class CurrentWeather(object):
                 
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
 # not finished below this point!        
-    def connect_co(self, latitude=0.0, longitude=0.0):# these functions don't currently seem to work very well for locations inside the US
+    def connect_co(self, latitude=0.0, longitude=10.0):# these functions don't currently seem to work very well for locations inside the US
         """connects to OpenWeatherMap carbon monoxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/co/{2},{1}/current.json?appid={0}'.format(self.api_key,self.longitude,self.latitude))
+        request = Request('http://api.openweathermap.org/pollution/v1/co/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
         try:
             data = urlopen(request).read()
         except HTTPError:
