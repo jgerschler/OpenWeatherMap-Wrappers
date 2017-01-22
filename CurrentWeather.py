@@ -9,7 +9,7 @@ class CurrentWeather(object):
         self.api_key = api_key
     
     def connect(self):# may need to add more error-checking; API results seem to deviate from documentation
-        """Connect to OpenWeatherMap server and pull weather data."""
+        """connects to OpenWeatherMap server and pull weather data."""
         request = Request('http://api.openweathermap.org/data/2.5/weather?zip={0},us&APPID={1}'.format(self.zipcode, self.api_key))
         try:
             data = urlopen(request).read()
@@ -60,7 +60,7 @@ class CurrentWeather(object):
         
         
     def parse(self, data):# for directly parsing data string
-        """Parse data directly from a string."""
+        """parses data directly from a string."""
         self.decoded_dict = json.loads(data)
         self.data_collection_time = self.decoded_dict.get('dt', 'unknown')
         self.cloud_cover = self.decoded_dict.get('clouds', 'unknown').get('all', 'unknown')
@@ -178,7 +178,8 @@ class CurrentWeather(object):
         return 1
         
     def get_co_details(self):
-        """returns nested tuple (sampling datetime, (latitude, longitude), [(pressure, value, precision)])"""
+        """returns nested tuple (sampling datetime, (latitude, longitude),
+        [(pressure, value, precision)])"""
         return (self.co_datetime, self.co_location, self.co)
      
     def connect_o3(self, latitude=0.0, longitude=10.0):
@@ -220,7 +221,8 @@ class CurrentWeather(object):
         return 1
 
     def get_so2_details(self):
-        """returns nested tuple (sampling datetime, (latitude, longitude), [(pressure, value, precision)])"""
+        """returns nested tuple (sampling datetime, (latitude, longitude),
+        [(pressure, value, precision)])"""
         return (self.so2_datetime, self.so2_location, self.so2)
         
     def connect_no2(self, latitude=0.0, longitude=10.0):
@@ -248,9 +250,11 @@ class CurrentWeather(object):
             self.no2 = (None, None)
         self.no2_location = (self.decoded_dict.get('location').get('latitude'), self.decoded_dict.get('location').get('longitude'))
         self.no2_datetime = self.decoded_dict.get('time')
+        return 1
 
     def get_no2_details(self):
-        """returns a nested tuple (sampling datetime, (latitude, longitude), (trop. no2 value, precision), (strat. no2 value, precision), (no2 value, precision))"""
+        """returns a nested tuple (sampling datetime, (latitude, longitude),
+        (trop. no2 value, precision), (strat. no2 value, precision), (no2 value, precision))"""
         return (self.no2_datetime, self.no2_location, self.no2_trop, self.no2_strat, self.no2)
         
 if __name__ == '__main__':
