@@ -178,7 +178,8 @@ class CurrentWeather(object):
         return 1
         
     def get_co_details(self):
-        pass
+        """returns nested tuple (sampling datetime, (latitude, longitude), [(pressure, value, precision)])"""
+        return (self.co_datetime, self.co_location, self.co)
      
     def connect_o3(self, latitude=0.0, longitude=10.0):
         """connects to OpenWeatherMap ozone API"""
@@ -197,7 +198,8 @@ class CurrentWeather(object):
         return 1
 
     def get_o3_details(self):
-        pass
+        """returns nested tuple (sampling datetime, (latitude, longitude), value)"""
+        return (self.o3_datetime, self.o3_location, self.o3)
         
     def connect_so2(self, latitude=0.0, longitude=10.0):
         """connects to OpenWeatherMap sulfur dioxide API"""
@@ -218,7 +220,8 @@ class CurrentWeather(object):
         return 1
 
     def get_so2_details(self):
-        pass
+        """returns nested tuple (sampling datetime, (latitude, longitude), [(pressure, value, precision)])"""
+        return (self.so2_datetime, self.so2_location, self.so2)
         
     def connect_no2(self, latitude=0.0, longitude=10.0):
         """connects to OpenWeatherMap nitrogen dioxide API"""
@@ -247,7 +250,8 @@ class CurrentWeather(object):
         self.no2_datetime = self.decoded_dict.get('time')
 
     def get_no2_details(self):
-        pass
+        """returns a nested tuple (sampling datetime, (latitude, longitude), (trop. no2 value, precision), (strat. no2 value, precision), (no2 value, precision))"""
+        return (self.no2_datetime, self.no2_location, self.no2_trop, self.no2_strat, self.no2)
         
 if __name__ == '__main__':
     print("Suggested uses: Import as a module, or run in an IDE.")
