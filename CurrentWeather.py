@@ -158,10 +158,10 @@ class CurrentWeather(object):
                 'Unknown'              
         return (self.wind_direction, cardinal_direction(int(self.wind_direction)))
 
-# need to continue work on sections below -- default lat/long is only for testing purposes and should be removed later. Need to round actual values to increase sampling distance!        
-    def connect_co(self, latitude=0.0, longitude=10.0):# these functions don't currently seem to work very well for locations inside the US
+# need to continue work on sections below -- add units to returned tuples. Also, improve error handling in case these functions are run before connect()       
+    def connect_co(self):# these functions don't currently seem to work very well for locations inside the US
         """connects to OpenWeatherMap carbon monoxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/co/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
+        request = Request('http://api.openweathermap.org/pollution/v1/co/{0},{1}/current.json?appid={2}'.format(round(self.latitude, 1), round(self.longitude, 1), self.api_key))
         try:
             data = urlopen(request).read()
         except HTTPError:
@@ -182,9 +182,9 @@ class CurrentWeather(object):
         [(pressure, value, precision)])"""
         return (self.co_datetime, self.co_location, self.co)
      
-    def connect_o3(self, latitude=0.0, longitude=10.0):
+    def connect_o3(self):
         """connects to OpenWeatherMap ozone API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/o3/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
+        request = Request('http://api.openweathermap.org/pollution/v1/o3/{0},{1}/current.json?appid={2}'.format(round(self.latitude, 1), round(self.longitude, 1), self.api_key))
         try:
             data = urlopen(request).read()
         except HTTPError:
@@ -202,9 +202,9 @@ class CurrentWeather(object):
         """returns nested tuple (sampling datetime, (latitude, longitude), value)"""
         return (self.o3_datetime, self.o3_location, self.o3)
         
-    def connect_so2(self, latitude=0.0, longitude=10.0):
+    def connect_so2(self):
         """connects to OpenWeatherMap sulfur dioxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/so2/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
+        request = Request('http://api.openweathermap.org/pollution/v1/so2/{0},{1}/current.json?appid={2}'.format(round(self.latitude, 1), round(self.longitude, 1), self.api_key))
         try:
             data = urlopen(request).read()
         except HTTPError:
@@ -225,9 +225,9 @@ class CurrentWeather(object):
         [(pressure, value, precision)])"""
         return (self.so2_datetime, self.so2_location, self.so2)
         
-    def connect_no2(self, latitude=0.0, longitude=10.0):
+    def connect_no2(self):
         """connects to OpenWeatherMap nitrogen dioxide API"""
-        request = Request('http://api.openweathermap.org/pollution/v1/no2/{0},{1}/current.json?appid={2}'.format(latitude, longitude, self.api_key))
+        request = Request('http://api.openweathermap.org/pollution/v1/no2/{0},{1}/current.json?appid={2}'.format(round(self.latitude, 1), round(self.longitude, 1), self.api_key))
         try:
             data = urlopen(request).read()
         except HTTPError:
