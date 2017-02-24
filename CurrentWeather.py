@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json, time
 from datetime import datetime
 from urllib2 import Request, urlopen, HTTPError# update to use requests module?
